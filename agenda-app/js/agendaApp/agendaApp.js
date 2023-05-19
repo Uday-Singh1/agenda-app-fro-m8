@@ -15,10 +15,13 @@ class AgendaApp {
         switch (sign) {
             case "+":   // + voor optellen
                 this.month = this.month + 1; //hier verhoogt het de maand met 1  maand dus van januari naar feb  en van december naar januari etc.
-                break;
+
+                break;  //zonder de break kan je niet naar de volgene maand 
+            
             case "-": // - voor aftrekken
                 this.month = this.month - 1;    //hier keert het terug naar de vorige maand dus als ik op februari ben dan trekt het een nummer af van de 12 maanden dus dan wordt het de  maand voor de tweede maand (februari) naar de eerste maand januari en dat geld ook voor het overschakelen naar een jaar er voor dus van de eerste naar de 12 maand
-                break;
+
+                break;  
         }
 
         if (this.month === 12) {    // normaal zijn er 12 maanden
@@ -33,12 +36,12 @@ class AgendaApp {
 }
 
 class API {
-    dataFromAPI = [];
+    dataFromAPI = [];   //dit is een lege array/lijst dat dus zo wordt aangevuld met data.
 
-    async getData() {
+    async getData() {   // de async is asynchroon en bevat een await functie dus je wacht totdat je de json hebt gefetched dan ga je verder
         await fetch("../data/data.json").then(response => {     // in de achtergrond gaat het de data (maanden en dagen) uit de json bestand halen .
             return response.json();     //hier pakt het de echte data uit.
-        }).then(data => {
+        }).then(data => {   //het pakt de json en returned het en de then zet de datafrom api en pakt dan de maanden uit de data.json
             this.dataFromAPI = data.months; //en daarna wordt de data  geplaatst in de this.datafromapi hier pakt het alleen de maanden er uit , dus eigenlijk open je data en daarna pak je months uit de data .
         });
         return this.dataFromAPI;    //hier geeft hij het dan weer terug en dat is nodig omdat je het op regel 8-10 met de result weer direct wilt gebruiken.
@@ -73,14 +76,14 @@ class Agenda {
 class Header {
     nameOfMonth;    //naam van de maand
     htmlElement;    //html element is  de header
-    agenda;
+    agenda; //moet worden aangegeven zodat je later de agenda kan opslaan om verbinding terug te geven
     leftButton; //knoppen
     rightButton;    //knoppen
     agendaApp;  //de gehele app
 
     constructor(agenda, nameOfMonth, agendaApp) {
         this.agenda = agenda; //hier slaat hij de agenda op van waar die vandaan kwam zodat het weer de verbinding terug geeft 
-        this.agendaApp = agendaApp; //dit is eigenlijk ook een verbinding met de agenda app
+        this.agendaApp = agendaApp; //dit is eigenlijk een verbinding met de agenda app
         this.nameOfMonth = nameOfMonth; //hier is de verbinding met de naam van de maand 
         this.htmlElement = document.createElement("header");    // hier maak je de bovenkant waar je de maand naam en knoppen ziet 
         this.htmlElement.classList.add("agenda__header");   // hier maak je een classen aan voor je header dat je in de scss styled
@@ -91,30 +94,30 @@ class Header {
         this.leftButton = new Button("previous", "<", "agenda--left", this, this.agendaApp);  //de button heeft een bepaalde type
         this.agenda.render(".agenda__header", this.text);   // hier render je de  naam van de maand, en voeg je de styling ook aan toe, het moet tussen de previous en next knop worden gezet omdat je anders de positioning van de drie dingen door elkaar haalt
         this.rightButton = new Button("next", ">", "agenda--right", this, this.agendaApp);
-        this.text.innerText = this.nameOfMonth;
+        this.text.innerText = this.nameOfMonth; //de text dat de naam van de maand genereert dus de h2
 
     }
 
-    render(placeToRender, whatToRender) {
-        this.agenda.render(placeToRender, whatToRender);
+    render(placeToRender, whatToRender) {   //placTorender = waar je iets wilt renderen en WhatToRender is wat je wilt renderen
+        this.agenda.render(placeToRender, whatToRender);    //hier render je de agenda 
     }
 }
 
 class Button {
     htmlElement;  //de html elment voor de buttons
     innerText;  //de text voor de knoppen dus de <>
-    extraClass;
+    extraClass; //property van de button class
     Switcher;   //de switcher voor de knoppen
     header; //de header
     agendaApp;  //de gehele app
     type;   //de type voor de knoppen
 
     constructor(type, innerText, extraClass, header, agendaApp) {
-        this.type = type;
-        this.agendaApp = agendaApp;
+        this.type = type;   //de type geeft de type van de knop aan
+        this.agendaApp = agendaApp; //dit is eigenlijk  een verbinding met de agenda app
         this.htmlElement = document.createElement("button");    //hier maak je de buttons aan
         this.htmlElement.classList.add("agenda__button");   //hier voeg je een style classen toe voor de buttons
-        this.extraClass = extraClass;
+        this.extraClass = extraClass;   //De extraClass is  een property van de Button-class, Het wordt gebruikt om een extra CSS Class toe te voegen aan de "HTML-element" van de buttons.
         this.htmlElement.classList.add(this.extraClass);
         this.innerText = innerText; //de innertText is de <>
         this.htmlElement.innerText = this.innerText; //hier geef je aan dat de button wordt getoond als <>
@@ -128,16 +131,16 @@ class Button {
     }
 
     buttonClicked = () => { //hier worden de functionaliteiten van de knoppen aangegeven zodat ze heen en terug kunnen dus previous en next als je er op drukt
-        if (this.type === "previous") {
-            this.agendaApp.switchMonths("-");
+        if (this.type === "previous") { //de terug knop zodat je terug kan gaan naar de maand er voor 
+            this.agendaApp.switchMonths("-");    //hier word er afgetrokken op welke maand je zit dus als je op februari bent en drukt op het pijltje naar links dan gaat het naar januari
             return; // zonder deze return is het niet mogelijk om terug te drukken, je drukt wel maar het gaat nogsteeds de huidige maand laten zien
         }
-        this.agendaApp.switchMonths("+");
+        this.agendaApp.switchMonths("+");   //hier word er opgeteld op welke maand je zit dus als je op januari bent en drukt op het pijltje naar rechts dan gaat het naar februari
 
     }
 
     render() {
-        this.header.render("header", this.htmlElement);
+        this.header.render("header", this.htmlElement); // hier render je de header
     }
 }
 
@@ -145,7 +148,7 @@ class Switcher {
     agendaApp;
     agenda;
     cleaner;
-    constructor(agendaApp) {
+    constructor(agendaApp) {    //je geeft de agendaapp mee in de constructor
         this.agendaApp = agendaApp;     //krijgt de hele app mee 
         this.cleaner = new Cleaner();   //hier maakt het dus een nieuwe cleaner aan dat dus in de "utilities/cleaner.js" staat
     }
@@ -166,7 +169,7 @@ class Month {
         this.htmlElement = document.createElement("ul");    //hier maak je de uls die de aantalal dagen toont aan
         this.htmlElement.classList.add("agenda__month");    //hier style je de ul
         this.numberOfDays = numberOfDays;
-        this.agenda = agenda;
+        this.agenda = agenda;    //hier slaat hij de agenda op van waar die vandaan kwam zodat het weer de verbinding terug geeft
         this.agenda.render(".agenda", this.htmlElement);    //hier render je eerst de hele agenda, in de agenda moet je de hele maand renderen, dat is dus de ul (dagen)
         for (let i = 1; i <= numberOfDays; i++) {    //hier maakt het de aantal van de dagen aan.
             this.days.push(new Day(this, i));       //ik maak hier elke keer een nieuwe dag aan.
