@@ -7,12 +7,19 @@
     aspect-ratio: 1/1;
     background: #232121;
     border-radius: 2rem;
-    color: white;
+    color: rgb(255, 255, 255);
     align-items: center;
     position: fixed;
     right: 4rem;
     bottom: 3.4rem;
     box-shadow: 0 2rem 1rem 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+
+    &:hover{
+        transition: 0.4s;
+        transform: scale(1.02);
+    }
+
 
     &__header{
         background: #591515;
@@ -27,11 +34,15 @@
     }
 
     h2{
+        transition: transform 0.4s ease;
+       
+
         &:hover{
             cursor: pointer;
-            color: rgb(255, 0, 0);
-            transition: 0.4s;
+            color: rgb(246, 99, 99);
+            transition: 0.4s ease;
             transform: scale(1.1);
+            
         }
     }
 
@@ -68,12 +79,13 @@
         width: 80%;
         aspect-ratio: 1/1;
         border-radius: 50%;
-        font-size: 70%;
+        font-size: 60%;
+        transition: transform 0.4s ease;
+        box-shadow: 0 0.3rem 0 0 rgba(0, 0, 0, 0.5);
 
         &:hover{
             cursor: pointer;
             color: rgb(0, 0, 0);
-            transition: 0.4s;
             transform: scale(1.1);
         }
      
